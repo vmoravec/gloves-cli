@@ -1,0 +1,6 @@
+= gloves
+
+Describe your project here
+
+:include:gloves.rdoc
+

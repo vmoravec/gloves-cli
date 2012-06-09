@@ -1,0 +1,5 @@
+Directory Structure
+
+lib/dbus_clients - library for dbus client part
+lib/config_agent_service - library for services which do real work
+dbus-configuration - configuration for dbus service itself

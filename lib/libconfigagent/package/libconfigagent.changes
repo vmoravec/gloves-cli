@@ -1,0 +1,26 @@
+-------------------------------------------------------------------
+Wed Dec 14 13:38:54 UTC 2011 - jreidinger@suse.com
+
+- add timeout for dbus service 
+
+-------------------------------------------------------------------
+Wed Dec 14 09:55:04 UTC 2011 - jreidinger@suse.com
+
+- change architecture to use only one dbus service for all agents 
+- 0.2.0
+
+-------------------------------------------------------------------
+Mon Dec 12 10:38:38 UTC 2011 - jreidinger@suse.com
+
+- add initial augeas  serializer
+
+-------------------------------------------------------------------
+Tue Sep 27 12:29:48 CEST 2011 - jsuchome@suse.cz
+
+- various fixes for agent generator 
+
+-------------------------------------------------------------------
+Mon Aug 29 14:34:16 UTC 2011 - jreidinger@suse.com
+
+- initial package 
+

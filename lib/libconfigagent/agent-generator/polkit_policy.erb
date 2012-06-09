@@ -1,0 +1,62 @@
+<%#--
+# Config Agents Framework
+#
+# Copyright (C) 2011 Novell, Inc.
+#   This library is free software; you can redistribute it and/or modify
+# it only under the terms of version 2.1 or version 3 of the GNU Lesser General Public
+# License as published by the Free Software Foundation.
+#
+#   This library is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+# details.
+#
+#   You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+#++
+%><?xml version="1.0" encoding="UTF-8"?>
+<!-- GENERATED FILE, DO NOT MODIFY --!>
+<!DOCTYPE policyconfig PUBLIC
+ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1.0/policyconfig.dtd">
+<policyconfig>
+
+  <vendor>YaST Project</vendor>
+  <vendor_url>http://en.opensuse.org/YAST</vendor_url>
+
+<!--
+Rights for setting/getting user permissions
+-->
+
+  <% if type == :file %>
+  <action id="org.opensuse.config_agent.file.<%= identifier %>.read">
+    <description>Reading file <%= file_name %></description>
+    <message>Authentication is required to read file <%= file_name %></message>
+    <defaults>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>no</allow_active>
+    </defaults>
+  </action>
+  <action id="org.opensuse.config_agent.file.<%= identifier %>.write">
+    <description>Writing to file <%= file_name %></description>
+    <message>Authentication is required to write to <%= file_name %></message>
+    <defaults>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>no</allow_active>
+    </defaults>
+  </action>
+  <% elsif type == :script %>
+  <action id="org.opensuse.config_agent.script.<%= identifier %>.execute">
+    <description>Execute script <%= file_name %></description>
+    <message>Authentication is required to execute script <%= file_name %></message>
+    <defaults>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>no</allow_active>
+    </defaults>
+  </action>
+  <% else
+      raise "Unknown type"
+     end %>
+
+</policyconfig>

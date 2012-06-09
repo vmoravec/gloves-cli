@@ -1,0 +1,28 @@
+-------------------------------------------------------------------
+Fri Feb 10 11:42:02 CET 2012 - jsuchome@suse.cz
+
+- added mkinitrd agent 
+
+-------------------------------------------------------------------
+Fri Feb  3 13:59:10 CET 2012 - jsuchome@suse.cz
+
+- added loadkeys agent 
+
+-------------------------------------------------------------------
+Wed Dec 14 13:36:42 CET 2011 - jsuchome@suse.cz
+
+- added script agents
+- ported to new layout (jreidinger)
+- 0.1.1
+
+-------------------------------------------------------------------
+Fri Sep 30 15:58:11 CEST 2011 - jsuchome@suse.cz
+
+- added keyboard support 
+
+-------------------------------------------------------------------
+Thu Sep 29 16:02:24 CEST 2011 - jsuchome@suse.cz
+
+- initial version 
+- 0.1.0
+

@@ -1,0 +1,107 @@
+#!/usr/bin/env ruby
+#--
+# Config Agents Framework
+#
+# Copyright (C) 2011 Novell, Inc.
+#   This library is free software; you can redistribute it and/or modify
+# it only under the terms of version 2.1 or version 3 of the GNU Lesser General Public
+# License as published by the Free Software Foundation.
+#
+#   This library is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+# details.
+#
+#   You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+#++
+
+if ARGV.size < 2 || (!["file","script"].include?(ARGV[0]) && !["file","script"].include?(ARGV[1]))
+  puts "Usage config-agent-generator [-fi] <type> <file_path>
+  * -f overwrite existing files
+  * -i overwrittes only files in infrastructure directory
+  * type could be 'file' or 'script'
+  * file_path is path to config file or script"
+  exit 1
+end
+
+require "erb"
+require "fileutils"
+
+file = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+TEMPLATES_DIR = File.dirname(file)
+
+index = 0
+force = false
+infra_only = false
+case ARGV[index]
+when "-f"
+  force = true
+  index += 1
+when "-i"
+  force = true
+  infra_only = true
+  index += 1
+end
+type = ARGV[index].to_sym
+file_name = ARGV[index+1]
+identifier = file_name.split("/")[-1].gsub(/[-\.\/]/,"_").gsub(/^_/,"").downcase
+
+`mkdir -p policy-definitions service-implementation/#{type} generated-interface/config_agent test package` #create dir structure
+
+agent_class_file = file_name.gsub(/^.*\//,"").gsub(/[-\.]/,"_").downcase
+agent_class = agent_class_file.to_s.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase } #rails code of camelize
+service_script_name = agent_class_file+"_service.rb"
+
+GENERATED_FILES = {
+  "polkit_policy.erb" => File.join("policy-definitions","org.opensuse.config_agent.#{type}.#{identifier}.policy"),
+  "config_agent.erb" => File.join("service-implementation",type.to_s,agent_class_file+".rb"),
+  "config_agent_client.erb" => File.join("generated-interface","config_agent",agent_class_file+".rb"),
+  "agent_test.erb" => File.join("test","test_#{agent_class_file}.rb"),
+  "Rakefile.erb" => "Rakefile"
+}
+
+READ_ONLY_FILES = ["polkit_policy.erb","config_agent_client.erb"]
+
+
+GENERATED_FILES.each do |template,result_path|
+  if File.exists?(result_path) && !force
+    puts "File #{result_path} exists. Skipping..."
+    next
+  end
+  if File.exists?(result_path) && infra_only && !GENERATED_FILES.include?(template)
+    puts "File #{result_path} exists and not infrastructure. Skipping..."
+    next
+  end
+  template = File.read File.join(TEMPLATES_DIR,template)
+  result = ERB.new(template,0,"").result(binding)
+  File.open(result_path,"w") {|f| f.write result }
+  puts "File #{result_path} succesfully generated"
+end
+
+#packaging files has special handling to e.g. disable by option also only for first agent it make sense
+if Dir["**/*.spec*"].empty? #no spec yet
+  template = File.read File.join(TEMPLATES_DIR,"spec_template.erb")
+  result = ERB.new(template,0,"").result(binding)
+  output = "config_agent-#{identifier}.spec.template"
+  File.open(output,"w") {|f| f.write result }
+  puts "File #{output} succesfully generated"
+  output = "package/config_agent-#{identifier}.changes"
+  FileUtils.touch output
+  puts "File #{output} succesfully generated"
+  output = "VERSION"
+  File.open(output,"w") {|f| f.write "0.0.1" }
+  puts "File #{output} succesfully generated"
+  ["COPYING","COPYING.LESSER"].each do |f|
+    FileUtils.cp File.join(TEMPLATES_DIR,f),f
+    puts "File #{f} succesfully generated"
+  end
+end
+
+#generated gitignore. Have it separate if someone use other VCS so we can add it optional
+outfile = "package/.gitignore"
+if !File.exist? outfile
+  FileUtils.copy File.join(TEMPLATES_DIR,"gitignore_template"),outfile
+  puts "File #{outfile} succesfully generated"
+end
