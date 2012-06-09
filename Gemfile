@@ -5,4 +5,4 @@ gem "ruby-dbus"
 gem "open4"
 gem "terminal-table"
 gem "rainbow"
-gem "gli", :git => "git://github.com/davetron5000/gli.git", :branch => 'gli-2'
+gem "gli", "2.0.0.rc3"
