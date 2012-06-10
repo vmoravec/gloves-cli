@@ -1,18 +1,19 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'gli'
-begin # XXX: Remove this begin/rescue before distributing your app
 require 'gloves'
-rescue LoadError
-  STDERR.puts "In development, you need to use `bundle exec bin/todo` to run your app"
-  STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
-  STDERR.puts "Feel free to remove this message from bin/todo now"
-  exit 64
-end
+#egin # XXX: Remove this begin/rescue before distributing your app
+#require 'gloves'
+#escue LoadError
+# STDERR.puts "In development, you need to use `bundle exec bin/todo` to run your app"
+# STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
+# STDERR.puts "Feel free to remove this message from bin/todo now"
+# exit 64
+#nd
 
 include GLI::App
 
-program_desc 'Describe your application here'
+program_desc 'Command line user interface for Gloves'
 
 version Gloves::VERSION
 
@@ -40,7 +41,6 @@ command :country do |c|
     # If you have any errors, just raise them
     # raise "that command made no sense"
 
-    puts "country command ran"
   end
 end
 

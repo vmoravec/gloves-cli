@@ -6,6 +6,8 @@ $LOAD_PATH.unshift yast_path + '/config_agent-country/lib'
 
 require 'open4'
 require 'gloves-country/lib/glove/timezone'
+require 'terminal-table'
+require 'rainbow'
 
 puts "GT is a constant for Glove::Timezone. Usage: GT.read 'kind' => 'timezones'"
 GT = Glove::Timezone

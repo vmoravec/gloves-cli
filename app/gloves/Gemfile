@@ -2,5 +2,8 @@ source :rubygems
 
 gem "terminal-table"
 gem "rainbow"
+gem "open4"
+gem "ruby-augeas"
+gem "terminal-table"
 
 gemspec
