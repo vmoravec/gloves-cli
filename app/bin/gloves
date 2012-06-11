@@ -1,7 +1,13 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'gli'
-require 'gloves-cli'
+
+begin
+  require 'gloves-cli'
+rescue LoadError
+  $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+  require 'gloves-cli.rb'
+end
 
 include GLI::App
 
