@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'gli'
-require 'gloves'
+require 'gloves-cli'
 #egin # XXX: Remove this begin/rescue before distributing your app
 #require 'gloves'
 #escue LoadError
@@ -15,7 +15,7 @@ include GLI::App
 
 program_desc 'Command line user interface for Gloves'
 
-version Gloves::VERSION
+version GlovesCli::VERSION
 
 desc 'Describe some switch here'
 switch [:s,:switch]

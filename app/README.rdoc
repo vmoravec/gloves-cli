@@ -1,6 +1,3 @@
-= gloves
+= Gloves command line
 
-Describe your project here
-
-:include:gloves.rdoc
-
+* TODO
