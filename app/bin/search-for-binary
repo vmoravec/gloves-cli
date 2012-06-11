@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+p = $LOAD_PATH
+cli = "timezone"
+path_to_script  = ""
+p.each do |path|
+  path_to_script  = path if File.exists?(path + "/glove/#{cli}-cli.rb")
+end
+
+puts "this is the path: #{path_to_script}"
+  
