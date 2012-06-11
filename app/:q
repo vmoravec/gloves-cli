@@ -1,5 +1,7 @@
 require 'gloves/version.rb'
-yast_path = File.join(File.dirname(__FILE__), '..', '..', '..', 'lib')
+require 'glove/timezone'
+rescue LoadError
+yast_path = File.join(File.dirname(__FILE__), '..', '..', 'lib')
 $LOAD_PATH.unshift yast_path
 $LOAD_PATH.unshift yast_path + '/libconfigagent/lib'
 $LOAD_PATH.unshift yast_path + '/config_agent-country/lib'
@@ -9,7 +11,7 @@ require 'gloves-country/lib/glove/timezone'
 require 'terminal-table'
 require 'rainbow'
 
-puts "GT is a constant for Glove::Timezone. Usage: GT.read 'kind' => 'timezones'"
+#puts "GT is a constant for Glove::Timezone. Usage: GT.read 'kind' => 'timezones'"
 GT = Glove::Timezone
 @regions = GT.read 'kind'=>'regions', 'only' => 'Europe'
 @language = GT.read 'kind' => 'language'
