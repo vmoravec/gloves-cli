@@ -11,10 +11,22 @@ end
 
 include GLI::App
 
+#TODO read this from the gemspec description section
 program_desc 'Command line user interface for Gloves'
 
 version GlovesCli::VERSION
 
+GLOVES_CLI_PREFIX = /gloves-cli-\w+/
+
+Gem::Specification.find_all.select {|gem| gem.name =~ GLOVES_CLI_PREFIX }.each do |gloves_cli|
+ desc gloves_cli.description
+ command gloves_cli.name do |c|
+   # TODO resolve what to put into action block
+   c.action { }# do somethinjg
+ end
+end
+
+# Global gloves switches and flags
 desc 'Describe some switch here'
 switch [:s,:switch]
 
@@ -22,25 +34,6 @@ desc 'Describe some flag here'
 default_value 'the default'
 arg_name 'The name of the argument'
 flag [:f,:flagname]
-
-desc 'Describe country here'
-arg_name 'Describe arguments to country here'
-command :country do |c|
-  c.desc 'Describe a switch to country'
-  c.switch :s
-
-  c.desc 'Describe a flag to country'
-  c.default_value 'default'
-  c.flag :f
-  c.action do |global_options,options,args|
-
-    # Your command logic here
-     
-    # If you have any errors, just raise them
-    # raise "that command made no sense"
-
-  end
-end
 
 pre do |global,command,options,args|
   # Pre logic here
