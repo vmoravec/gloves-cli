@@ -23,7 +23,6 @@ program_desc 'Command line user interface for Timezone Glove'
 
 
 desc 'List available time zones'
-#arg_name 'Describe arguments to timezone here'
 command :list do |c|
 
   c.desc 'Show a list of all time zones'
@@ -43,8 +42,17 @@ command :list do |c|
       args["kind"]        = "regions"
       args["only"]        = options[:regions] unless options[:regions] == "all"
     end
-    regions = timezone.read args#'kind'=>'regions', 'only' => 'Europe'
+    regions = timezone.read args
     puts regions.inspect
+  end
+end
+
+desc 'Show the default time zone for given language'
+command :language do |c|
+
+  c.action do |global_options,options,args|
+    language = Glove::Timezone.read "kind" => "language", "language" => args[0]
+    puts language["timezone"]
   end
 end
 
