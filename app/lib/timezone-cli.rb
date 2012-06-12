@@ -3,13 +3,9 @@ require 'rubygems'
 require 'gli'
 
 begin
-  require 'terminal-table'
-  require 'rainbow'
   require 'glove/timezone'
 rescue LoadError
   require 'open4'
-  require 'terminal-table'
-  require 'rainbow'
   yast_path = File.join(File.dirname(__FILE__), '..', '..', 'lib')
   $LOAD_PATH.unshift yast_path
   $LOAD_PATH.unshift yast_path + '/libconfigagent/lib'
@@ -28,7 +24,7 @@ command :list do |c|
   c.desc 'Show a list of all time zones'
   c.switch [:t, :timezones]
 
-  c.desc 'Group time zones into regions'
+  c.desc 'Show time zones from specific region'
   c.default_value 'all'
   c.flag [:r, :regions]
 
@@ -37,13 +33,13 @@ command :list do |c|
     # If you have any errors, just raise them
     # raise "that command made no sense"
     timezone = Glove::Timezone
-    args = {}
-    args["kind"]        = "timezones" if options[:timezones]
+    params              = {}
+    params["kind"]      = "timezones" if options[:timezones]
     if options[:regions]
-      args["kind"]        = "regions"
-      args["only"]        = options[:regions] unless options[:regions] == "all"
+      params["kind"]        = "regions"
+      params["only"]        = options[:regions] unless options[:regions] == "all"
     end
-    regions = timezone.read args
+    regions = timezone.read params
     puts regions.inspect
   end
 end
@@ -67,11 +63,24 @@ command :summary do |c|
   end
 end
 
-desc 'Set new values for time zone configuration'
+desc 'Set new time zone'
 command :set do |c|
+
+  c.desc 'Hardware Clock ("localtime" or "UTC")'
+  c.flag [:h, :hwclock]
+
+
   c.action do |global_options,options,args|
-puts "options #{options.inspect}"
-puts "args #{args.inspect}"
+
+#FIXME usage of args is not visible in help
+    params      = {}
+    params["timezone"]  = args[0] if args[0]
+    if options[:hwclock]
+      hwclock = "--localtime" if options[:hwclock] == "localtime"
+      hwclock = "-u" if options[:hwclock].downcase == "utc"
+      params["hwclock"]   = hwclock unless hwclock.nil?
+    end
+    Glove::Timezone::modify({}, params)
   end
 end
 
