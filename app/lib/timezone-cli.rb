@@ -29,7 +29,8 @@ command :list do |c|
   c.switch [:t, :timezones]
 
   c.desc 'Group time zones into regions'
-  c.flag [:r, :regions], :default_value => 'all' # FIXME default_value does not work?
+  c.default_value 'all'
+  c.flag [:r, :regions]
 
   c.action do |global_options,options,args|
 
