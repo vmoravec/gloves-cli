@@ -80,6 +80,7 @@ command :set do |c|
       hwclock = "-u" if options[:hwclock].downcase == "utc"
       params["hwclock"]   = hwclock unless hwclock.nil?
     end
+    parmas["apply"]     = true unless params.empty?
     Glove::Timezone::modify({}, params)
   end
 end
